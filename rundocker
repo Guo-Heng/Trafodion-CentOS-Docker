@@ -1,0 +1,22 @@
+IP=68
+IMAGEID=0
+
+if [ "$1" != "" ]; then
+    IMAGEID=$1
+    echo IMAGE ID : $IMAGEID
+else
+    IMAGEID=$(docker images | awk '{if(NR > 1) {print $3}}' | head -1)
+    echo IMAGE ID : $IMAGEID
+fi
+
+if [ "$2" != "" ]; then
+    IP=$2
+    echo IP : 192.16.20.$2
+else
+    IP=1
+    echo IP : 192.16.20.1
+fi
+
+docker run -it --privileged --hostname mybox --ulimit core=1000000000 --ulimit memlock=335544320 $IMAGEID /usr/sbin/init
+# docker run -it --privileged --hostname mybox --net=ip67 --ip 192.16.20.$IP --ulimit core=1000000000 --ulimit memlock=335544320 $IMAGEID /usr/sbin/init
+

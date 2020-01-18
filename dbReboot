@@ -1,0 +1,4 @@
+echo y | ckillall;
+if [ "$?" -eq "0" ];then
+    sqstart;
+fi;

@@ -27,7 +27,8 @@ RUN yum install -y alsa-lib-devel ant ant-nodeps apr-devel apr-util-devel \
 RUN yum install -y snappy snappy-devel lzo lzo-devel libcgroup libcgroup-tools \
          libcgroup-devel lzop byacc libuuid libuuid-devel \
          zeromq zeromq-devel \
-         npm 
+         npm \
+         go
 
 # Install bower for compiling dbmgr
 RUN npm --registry https://registry.npm.taobao.org install -g bower
@@ -38,7 +39,7 @@ RUN yum -y erase pdsh qt-dev
 # Install SSHD
 # Install sudo
 # Install emacs
-RUN yum install -y openssh-server sudo emacs xcscope tmux git dstat
+RUN yum install -y openssh-server sudo emacs vim xcscope tmux git dstat
 
 # Cleanup yum
 RUN yum clean all
@@ -70,8 +71,18 @@ COPY esgyn-software/*.tar.gz ./esgyn-software/
 COPY esgyn-download/*.tar.gz ./esgyn-download/
 COPY esgyn-tools/*.tar.gz ./esgyn-tools/
 
+COPY hdfsDbReboot /usr/local/bin/
+COPY dbReboot /usr/local/bin/
+
+USER root
+RUN chown -R esgyn:esgyn esgyn-software esgyn-download esgyn-tools
+RUN chmod 755 /usr/local/bin/hdfsDbReboot /usr/local/bin/dbReboot
+RUN ln -s /usr/lib/jvm/java-1.8.0-openjdk-*.x86_64/ /usr/lib/jvm/java-1.8.0-openjdk.x86_64
+
+USER ${user}
 WORKDIR /home/esgyn/
 COPY bashrc ./.bashrc
+COPY tmux.conf ./.tmux.conf
 
 WORKDIR /home/esgyn
 #USER root

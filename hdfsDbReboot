@@ -1,0 +1,9 @@
+echo y | ckillall;
+if [ "$?" -eq "0" ];then
+    swstopall;
+    rm -rf /home/esgyn/work/esgyn/core/sqf/sql/local_hadoop/data/zookeeper/zookeeper_0/version-2
+    swstartall;
+    if [ "$?" -eq "0" ];then
+        sqstart;
+    fi;    
+fi;
