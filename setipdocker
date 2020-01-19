@@ -1,0 +1,20 @@
+CONTAINER_NAME=''
+IP=2
+
+if [ "$1" != "" ]; then
+    CONTAINER_NAME=$1
+    echo CONTAINER_NAME : $CONTAINER_NAME
+else
+    echo need container name
+    exit 1
+fi
+
+if [ "$2" != "" ]; then
+    IP=$2
+    echo IP : 172.16.21.$2
+else
+    IP=2
+    echo IP : 172.16.21.2
+fi
+
+sudo pipework enp0s31f6 $CONTAINER_NAME 172.16.21.$IP/23@172.16.20.254
