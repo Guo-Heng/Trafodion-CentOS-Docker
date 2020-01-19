@@ -39,7 +39,7 @@ RUN yum -y erase pdsh qt-dev
 # Install SSHD
 # Install sudo
 # Install emacs
-RUN yum install -y openssh-server sudo emacs vim xcscope tmux git dstat
+RUN yum install -y openssh-server sudo emacs vim cscope tmux git dstat
 
 # Cleanup yum
 RUN yum clean all
@@ -67,22 +67,32 @@ RUN echo "NoHostAuthenticationForLocalhost=yes" >>~/.ssh/config
 RUN mkdir -p /home/esgyn/work/esgyn
 WORKDIR /home/esgyn/work/
 #RUN mkdir -p work/esgyn work/esgyn-software work/esgyn-tools work/esgyn-download
-COPY esgyn-software/*.tar.gz ./esgyn-software/
-COPY esgyn-download/*.tar.gz ./esgyn-download/
-COPY esgyn-tools/*.tar.gz ./esgyn-tools/
+COPY --chown=esgyn:esgyn esgyn-software/*.tar.gz ./esgyn-software/
+COPY --chown=esgyn:esgyn esgyn-download/*.tar.gz ./esgyn-download/
+COPY --chown=esgyn:esgyn esgyn-tools/*.tar.gz ./esgyn-tools/
 
-COPY hdfsDbReboot /usr/local/bin/
-COPY dbReboot /usr/local/bin/
+
+COPY db_cmd/hdfsDbReboot /usr/local/bin/
+COPY db_cmd/dbReboot /usr/local/bin/
+#COPY docker_cmd/rundocker /usr/local/bin/
+#COPY docker_cmd/execdocker /usr/local/bin/
+#COPY docker_cmd/setipdocker /usr/local/bin/
 
 USER root
-RUN chown -R esgyn:esgyn esgyn-software esgyn-download esgyn-tools
+#RUN chown -R esgyn:esgyn esgyn-software esgyn-download esgyn-tools
 RUN chmod 755 /usr/local/bin/hdfsDbReboot /usr/local/bin/dbReboot
 RUN ln -s /usr/lib/jvm/java-1.8.0-openjdk-*.x86_64/ /usr/lib/jvm/java-1.8.0-openjdk.x86_64
 
 USER ${user}
 WORKDIR /home/esgyn/
-COPY bashrc ./.bashrc
-COPY tmux.conf ./.tmux.conf
+COPY --chown=esgyn:esgyn bashrc ./.bashrc
+COPY --chown=esgyn:esgyn tmux.conf ./.tmux.conf
+
+# emacs
+COPY --chown=esgyn:esgyn emacs_depend/emacs.conf .emacs
+COPY --chown=esgyn:esgyn emacs_depend/google-c-style.el .emacs.d/depend/
+COPY --chown=esgyn:esgyn emacs_depend/monokai-theme.el .emacs.d/depend/
+COPY --chown=esgyn:esgyn emacs_depend/xcscope.el .emacs.d/depend/
 
 WORKDIR /home/esgyn
 USER root
