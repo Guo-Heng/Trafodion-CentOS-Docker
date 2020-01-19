@@ -45,9 +45,9 @@ RUN yum install -y openssh-server sudo emacs vim xcscope tmux git dstat
 RUN yum clean all
 
 # Generate ssh host keys
-#RUN ssh-keygen -f /etc/ssh/ssh_host_rsa_key -N '' -t rsa
-#RUN ssh-keygen -f /etc/ssh/ssh_host_ecdsa_key -N '' -t ecdsa
-#RUN if [ x${osver} = x7 ]; then ssh-keygen -f /etc/ssh/ssh_host_ed25519_key -N '' -t ed25519; fi
+RUN ssh-keygen -f /etc/ssh/ssh_host_rsa_key -N '' -t rsa
+RUN ssh-keygen -f /etc/ssh/ssh_host_ecdsa_key -N '' -t ecdsa
+RUN ssh-keygen -f /etc/ssh/ssh_host_ed25519_key -N '' -t ed25519
 
 # Setup ulimit for running esgyndb
 COPY limits.conf /etc/security/limits.conf
@@ -85,5 +85,5 @@ COPY bashrc ./.bashrc
 COPY tmux.conf ./.tmux.conf
 
 WORKDIR /home/esgyn
-#USER root
-ENTRYPOINT /bin/bash
+USER root
+ENTRYPOINT /usr/sbin/sshd && /bin/bash
