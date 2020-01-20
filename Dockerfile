@@ -67,10 +67,9 @@ RUN echo "NoHostAuthenticationForLocalhost=yes" >>~/.ssh/config
 RUN mkdir -p /home/esgyn/work/esgyn
 WORKDIR /home/esgyn/work/
 #RUN mkdir -p work/esgyn work/esgyn-software work/esgyn-tools work/esgyn-download
-COPY --chown=esgyn:esgyn esgyn-software/*.tar.gz ./esgyn-software/
-COPY --chown=esgyn:esgyn esgyn-download/*.tar.gz ./esgyn-download/
-COPY --chown=esgyn:esgyn esgyn-tools/*.tar.gz ./esgyn-tools/
-
+COPY --chown=esgyn:esgyn esgyn-software/* ./esgyn-software/
+COPY --chown=esgyn:esgyn esgyn-download/* ./esgyn-download/
+COPY --chown=esgyn:esgyn esgyn-tools/* ./esgyn-tools/
 
 COPY db_cmd/hdfsDbReboot /usr/local/bin/
 COPY db_cmd/dbReboot /usr/local/bin/
