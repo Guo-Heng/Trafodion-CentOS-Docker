@@ -39,7 +39,8 @@ RUN yum -y erase pdsh qt-dev
 # Install SSHD
 # Install sudo
 # Install emacs
-RUN yum install -y openssh-server sudo emacs vim cscope tmux git dstat
+# Install git-email
+RUN yum install -y openssh-server sudo emacs vim cscope tmux git dstat git-email
 
 # Cleanup yum
 RUN yum clean all
