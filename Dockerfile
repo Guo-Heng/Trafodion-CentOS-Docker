@@ -94,6 +94,9 @@ COPY --chown=esgyn:esgyn emacs_depend/google-c-style.el .emacs.d/depend/
 COPY --chown=esgyn:esgyn emacs_depend/monokai-theme.el .emacs.d/depend/
 COPY --chown=esgyn:esgyn emacs_depend/xcscope.el .emacs.d/depend/
 
+# add m2 repository
+ADD --chown=esgyn:esgyn repository.tar.gz ./.m2/
+
 WORKDIR /home/esgyn
-USER root
-ENTRYPOINT /usr/sbin/sshd && /bin/bash
+USER esgyn
+ENTRYPOINT sudo /usr/sbin/sshd && /bin/bash
