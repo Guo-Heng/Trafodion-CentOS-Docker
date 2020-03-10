@@ -1,4 +1,4 @@
-# esgyn-centos-Dockerfile
+# Trafodion-centos-Dockerfile
 
 You can run the following command to build docker images.
 
